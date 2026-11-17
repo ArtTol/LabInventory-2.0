@@ -210,7 +210,7 @@ export default function Dashboard() {
         <div>
           <div className="eyebrow">LABORATORY MANAGEMENT</div>
           <h1>Dashboard</h1>
-          <p>Overview of your laboratory inventory</p>
+          <p>Here’s what’s happening in your lab</p>
           <p>
             API Status:{" "}
             <strong>{apiStatus}</strong>
