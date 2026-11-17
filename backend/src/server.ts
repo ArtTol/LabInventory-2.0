@@ -26,6 +26,7 @@ app.use(cors({
     "http://localhost:5173",
     "http://localhost:5174",
      "https://lab-inventory-eta-snowy.vercel.app"
+    "https://lab-inventory-2-0.vercel.app"
   ],
   credentials: true,
 }));
