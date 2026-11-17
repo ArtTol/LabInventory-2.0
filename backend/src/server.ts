@@ -15,6 +15,7 @@ import { requireRole } from "./middleware/auth.js";
 dotenv.config({ path: "backend/.env" });
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = Number(process.env.PORT) || 3000;
 
 if (!process.env.SESSION_SECRET) {
