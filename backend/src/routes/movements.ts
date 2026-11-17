@@ -126,7 +126,7 @@ router.post("/write-off", requireRole("Admin", "Chemist"), async (req, res) => {
          reference,
          material_id
        )
-       VALUES ($1, 'WRITE_OFF', $2, $3, $6, $4, $5)
+       VALUES ($1::integer, 'WRITE_OFF', $2::real, $3::text, $6::integer, $4::text, $5::integer)
        RETURNING id, movement_datetime`,
       [
   parsedLotId,
