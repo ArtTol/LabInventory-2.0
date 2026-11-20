@@ -367,16 +367,23 @@ function Receive() {
                   </select>
                 </label>
 
-                <label className="form-field full">
-                  Storage conditions
-                  <input
+                  <label className="form-field">
+                  Storage Conditions
+                  <select
                     value={form.storage}
                     onChange={(e) =>
                       setForm({ ...form, storage: e.target.value })
                     }
-                    placeholder="Storage location or conditions"
-                  />
+                  >
+                    <option>Room temperature</option>
+                    <option>Refrigerated (2–8°C)</option>
+                    <option>Frozen</option>
+                    <option>Flammable cabinet</option>
+                    <option>Acid cabinet</option>
+                    <option>Dry storage</option>
+                  </select>
                 </label>
+              </div>
 
                 <label className="form-field full">
                   Notes
