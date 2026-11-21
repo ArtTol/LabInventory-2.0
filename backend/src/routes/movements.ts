@@ -105,7 +105,7 @@ router.post("/write-off", requireRole("Admin", "Chemist"), async (req, res) => {
        SET
          current_quantity = $1,
          status = CASE
-           WHEN $1::numeric = 0 THEN 'DEPLETED'
+          WHEN $1::real = 0::real THEN 'DEPLETED'
            WHEN COALESCE(effective_expiry_date, expiry_date) < CURRENT_DATE
              THEN 'EXPIRED'
            ELSE 'ACTIVE'
@@ -126,7 +126,7 @@ router.post("/write-off", requireRole("Admin", "Chemist"), async (req, res) => {
          reference,
          material_id
        )
-       VALUES ($1, 'WRITE_OFF', $2, $3, $6, $4, $5)
+       VALUES ($1::integer, 'WRITE_OFF', $2::real, $3::text, $6::integer, $4::text, $5::integer)
        RETURNING id, movement_datetime`,
       [
   parsedLotId,
@@ -266,7 +266,7 @@ router.post("/adjustment", requireRole("Admin", "Chemist"), async (req, res) => 
       `UPDATE lots
        SET current_quantity = $1,
            status = CASE
-             WHEN $1::numeric = 0 THEN 'DEPLETED'
+             WHEN $1::real = 0::real THEN 'DEPLETED'
              WHEN COALESCE(effective_expiry_date, expiry_date) < CURRENT_DATE
                THEN 'EXPIRED'
              ELSE 'ACTIVE'

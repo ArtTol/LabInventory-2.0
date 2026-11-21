@@ -15,6 +15,7 @@ import { requireRole } from "./middleware/auth.js";
 dotenv.config({ path: "backend/.env" });
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = Number(process.env.PORT) || 3000;
 
 if (!process.env.SESSION_SECRET) {
@@ -25,7 +26,8 @@ app.use(cors({
   origin: [
     "http://localhost:5173",
     "http://localhost:5174",
-     "https://lab-inventory-eta-snowy.vercel.app"
+     "https://lab-inventory-eta-snowy.vercel.app",
+    "https://lab-inventory-2-0.vercel.app"
   ],
   credentials: true,
 }));
@@ -47,7 +49,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: "none",
       maxAge: 8 * 60 * 60 * 1000,
     },
   })

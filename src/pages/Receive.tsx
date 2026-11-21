@@ -361,12 +361,13 @@ function Receive() {
                     <option value="ml">ml</option>
                     <option value="l">l</option>
                     <option value="g">g</option>
+                    <option value="g">mg</option>
                     <option value="kg">kg</option>
                     <option value="pcs">pcs</option>
                   </select>
                 </label>
 
-                <label className="form-field full">
+                   <label className="form-field full">
                   Storage conditions
                   <input
                     value={form.storage}
