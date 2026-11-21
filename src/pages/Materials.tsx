@@ -12,6 +12,7 @@ import { useAuth } from "../contexts/AuthContext";
 type Material = {
   id: number;
   name: string;
+  materialCode: string;
   type: string;
   unit: string;
   manufacturer: string;
@@ -24,6 +25,7 @@ type Material = {
 type MaterialApi = {
   id: number;
   name: string;
+  materialCode: string;
   materialType: string | null;
   unit: string;
   manufacturer: string | null;
@@ -35,6 +37,7 @@ type MaterialApi = {
 
 const emptyForm = {
   name: "",
+  materialCode: "",
   type: "Reagent",
   unit: "g",
   manufacturer: "",
@@ -45,9 +48,10 @@ const emptyForm = {
 
 function mapMaterial(item: MaterialApi): Material {
   return {
-    id: Number(item.id),
-    name: item.name,
-    type: item.materialType || "Other",
+  id: Number(item.id),
+  name: item.name,
+  materialCode: item.materialCode || "",
+  type: item.materialType || "Other",
     unit: item.unit,
     manufacturer: item.manufacturer || "",
     catalogNumber: item.catalogNumber || "",
@@ -131,8 +135,9 @@ const isAdmin = user?.role === "Admin";
   function openEdit(item: Material) {
     setEditingId(item.id);
     setForm({
-      name: item.name,
-      type: item.type,
+  name: item.name,
+  materialCode: item.materialCode,
+  type: item.type,
       unit: item.unit,
       manufacturer: item.manufacturer,
       catalogNumber: item.catalogNumber,
@@ -155,8 +160,9 @@ const isAdmin = user?.role === "Admin";
     }
 
     const data = {
-      name: form.name.trim(),
-      materialType: form.type,
+  name: form.name.trim(),
+  materialCode: form.materialCode.trim(),
+  materialType: form.type,
       unit: form.unit,
       manufacturer: form.manufacturer.trim(),
       catalogNumber: form.catalogNumber.trim(),
@@ -329,6 +335,7 @@ const isAdmin = user?.role === "Admin";
             <thead>
               <tr>
                 <th>Material</th>
+                <th>Material Code</th>
                 <th>Material ID</th>
                 <th>Type</th>
                 <th>Unit</th>
@@ -343,7 +350,7 @@ const isAdmin = user?.role === "Admin";
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={9} className="empty-table">
+                  <td colSpan={10} className="empty-table">
                     Loading materials...
                   </td>
                 </tr>
@@ -362,6 +369,7 @@ const isAdmin = user?.role === "Admin";
                           </div>
                         </div>
                       </td>
+                                            <td>{item.materialCode}</td>
                       <td>
                         <span className="id-label">#{item.id}</span>
                       </td>
@@ -413,7 +421,7 @@ const isAdmin = user?.role === "Admin";
 
                   {filtered.length === 0 && (
                     <tr>
-                      <td colSpan={9} className="empty-table">
+                      <td colSpan={10} className="empty-table">
                         No materials found. Try changing your search or filters.
                       </td>
                     </tr>
@@ -465,6 +473,17 @@ const isAdmin = user?.role === "Admin";
                     placeholder="e.g. Acetonitrile"
                   />
                 </label>
+                <label className="form-field">
+  Material Code *
+  <input
+    required
+    value={form.materialCode}
+    onChange={(e) =>
+      setForm({ ...form, materialCode: e.target.value })
+    }
+    placeholder="e.g. A-1"
+  />
+</label>
 
                 <label className="form-field">
                   Material Type *

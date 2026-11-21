@@ -13,6 +13,7 @@ router.get("/", requireAuth, async (_req, res) => {
       SELECT
         id,
         name,
+        material_code AS "materialCode",
         material_type AS "materialType",
         unit,
         manufacturer,
@@ -40,6 +41,7 @@ router.post("/", requireRole("Admin"), async (req, res) => {
   try {
     const {
       name,
+       materialCode,
       materialType,
       unit,
       manufacturer,
@@ -48,7 +50,7 @@ router.post("/", requireRole("Admin"), async (req, res) => {
       storageConditions,
     } = req.body;
 
-    if (!name?.trim() || !unit?.trim()) {
+   if (!name?.trim() || !materialCode?.trim() || !unit?.trim()) {
       res.status(400).json({ message: "Name and unit are required" });
       return;
     }
@@ -58,20 +60,21 @@ router.post("/", requireRole("Admin"), async (req, res) => {
 
     const result = await client.query(
       `INSERT INTO materials (
-        name, material_type, unit, manufacturer,
-        catalog_number, min_stock, storage_conditions
-      )
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+  name, material_code, material_type, unit, manufacturer,
+  catalog_number, min_stock, storage_conditions
+)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING id`,
       [
-        name.trim(),
-        materialType || null,
-        unit.trim(),
-        manufacturer || null,
-        catalogNumber || null,
-        minStock ?? 0,
-        storageConditions || null,
-      ]
+  name.trim(),
+  materialCode.trim(),
+  materialType || null,
+  unit.trim(),
+  manufacturer || null,
+  catalogNumber || null,
+  minStock ?? 0,
+  storageConditions || null,
+]
     );
 
     const materialId = result.rows[0].id;
@@ -105,8 +108,13 @@ router.post("/", requireRole("Admin"), async (req, res) => {
       await client.query("ROLLBACK").catch(() => {});
     }
 
-    console.error("Create material error:", error);
-    res.status(500).json({ message: "Failed to create material" });
+       if ((error as { code?: string })?.code === "23505") {
+      res.status(409).json({ message: "Material code already exists" });
+      return;
+    }
+
+console.error("Create material error:", error);
+res.status(500).json({ message: "Failed to create material" });
   } finally {
     client?.release();
   }
@@ -121,6 +129,7 @@ router.put("/:id", requireRole("Admin"), async (req, res) => {
     const {
       name,
       materialType,
+      materialCode,
       unit,
       manufacturer,
       catalogNumber,
@@ -140,6 +149,7 @@ router.put("/:id", requireRole("Admin"), async (req, res) => {
     const oldResult = await client.query(
       `SELECT
         name,
+        material_code,
         material_type,
         unit,
         manufacturer,
@@ -163,6 +173,7 @@ router.put("/:id", requireRole("Admin"), async (req, res) => {
 
     const newMaterial = {
       name: name.trim(),
+        material_code: materialCode?.trim() || oldMaterial.material_code,
       material_type: materialType || null,
       unit: unit.trim(),
       manufacturer: manufacturer || null,
@@ -175,31 +186,34 @@ router.put("/:id", requireRole("Admin"), async (req, res) => {
     await client.query(
       `UPDATE materials SET
         name = $1,
-        material_type = $2,
-        unit = $3,
-        manufacturer = $4,
-        catalog_number = $5,
-        min_stock = $6,
-        is_active = $7,
-        storage_conditions = $8,
+        material_code = $2,
+        material_type = $3
+                unit = $4,
+        manufacturer = $5,
+        catalog_number = $6,
+        min_stock = $7,
+        is_active = $8,
+        storage_conditions = $9,
         updated_at = NOW()
-      WHERE id = $9`,
+      WHERE id = $10`,
       [
-        newMaterial.name,
-        newMaterial.material_type,
-        newMaterial.unit,
-        newMaterial.manufacturer,
-        newMaterial.catalog_number,
-        newMaterial.min_stock,
-        newMaterial.is_active,
-        newMaterial.storage_conditions,
-        req.params.id,
-      ]
+  newMaterial.name,
+  newMaterial.material_code,
+  newMaterial.material_type,
+  newMaterial.unit,
+  newMaterial.manufacturer,
+  newMaterial.catalog_number,
+  newMaterial.min_stock,
+  newMaterial.is_active,
+  newMaterial.storage_conditions,
+  req.params.id,
+]
     );
 
     const changes = [
-      ["name", oldMaterial.name, newMaterial.name],
-      ["material_type", oldMaterial.material_type, newMaterial.material_type],
+  ["name", oldMaterial.name, newMaterial.name],
+  ["material_code", oldMaterial.material_code, newMaterial.material_code],
+  ["material_type", oldMaterial.material_type, newMaterial.material_type],
       ["unit", oldMaterial.unit, newMaterial.unit],
       ["manufacturer", oldMaterial.manufacturer, newMaterial.manufacturer],
       ["catalog_number", oldMaterial.catalog_number, newMaterial.catalog_number],
