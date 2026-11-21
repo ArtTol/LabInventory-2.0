@@ -108,9 +108,10 @@ const isAdmin = user?.role === "Admin";
       const searchValue = search.toLowerCase();
 
       const matchesSearch =
-        item.name.toLowerCase().includes(searchValue) ||
-        String(item.id).includes(search) ||
-        item.catalogNumber.toLowerCase().includes(searchValue);
+  item.name.toLowerCase().includes(searchValue) ||
+  item.materialCode.toLowerCase().includes(searchValue) ||
+  String(item.id).includes(search) ||
+  item.catalogNumber.toLowerCase().includes(searchValue);
 
       const matchesType =
         typeFilter === "All" || item.type === typeFilter;
