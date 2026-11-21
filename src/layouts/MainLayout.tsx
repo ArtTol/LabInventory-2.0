@@ -12,6 +12,7 @@ import { api } from "../services/api";
 type GlobalMaterial = {
   id: number;
   name: string;
+  materialCode: string | null;
   catalogNumber: string | null;
 };
 
@@ -98,11 +99,12 @@ const filteredSearchMaterials = useMemo(() => {
   if (!query) return [];
 
   return searchMaterials.filter(
-    (item) =>
-      item.name.toLowerCase().includes(query) ||
-      String(item.id).includes(query) ||
-      (item.catalogNumber || "").toLowerCase().includes(query)
-  );
+  (item) =>
+    item.name.toLowerCase().includes(query) ||
+    (item.materialCode || "").toLowerCase().includes(query) ||
+    String(item.id).includes(query) ||
+    (item.catalogNumber || "").toLowerCase().includes(query)
+);
 }, [searchMaterials, searchQuery]);
 
 const filteredSearchLots = useMemo(() => {
