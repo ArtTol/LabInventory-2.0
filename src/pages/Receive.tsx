@@ -361,7 +361,7 @@ function Receive() {
                     <option value="mg">mg</option>
                     <option value="g">g</option>
                     <option value="ml">ml</option>
-                    <option value="L">mg</option>
+                    <option value="L">L</option>
                     <option value="pcs">pcs</option>
                   </select>
                 </label>
