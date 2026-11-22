@@ -160,14 +160,7 @@ const filteredSearchMovements = useMemo(() => {
           </div>
         </div>
 
-        <div className="workspace">
-          <div className="workspace-avatar">L</div>
-          <div className="workspace-info">
-            <strong>Laboratory</strong>
-            <span>Inventory workspace</span>
-          </div>
-          <ChevronDown size={16} />
-        </div>
+        
 
         <nav className="navigation">
           {navigation
