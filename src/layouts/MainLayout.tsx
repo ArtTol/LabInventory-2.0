@@ -156,7 +156,7 @@ const filteredSearchMovements = useMemo(() => {
           <div className="brand-icon"><FlaskConical size={23} /></div>
           <div>
             <h2>LabInventory</h2>
-            <span>LABORATORY SYSTEM</span>
+            <span>Laboratory Inventory Management System</span>
           </div>
         </div>
 
