@@ -358,11 +358,10 @@ function Receive() {
                       setForm({ ...form, unit: e.target.value })
                     }
                   >
-                    <option value="ml">ml</option>
-                    <option value="l">l</option>
+                    <option value="mg">mg</option>
                     <option value="g">g</option>
-                    <option value="g">mg</option>
-                    <option value="kg">kg</option>
+                    <option value="ml">ml</option>
+                    <option value="L">mg</option>
                     <option value="pcs">pcs</option>
                   </select>
                 </label>

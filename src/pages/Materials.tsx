@@ -510,11 +510,12 @@ const isAdmin = user?.role === "Admin";
                       setForm({ ...form, unit: e.target.value })
                     }
                   >
+                    <option>mg</option>
                     <option>g</option>
-                    <option>kg</option>
                     <option>ml</option>
                     <option>L</option>
                     <option>pcs</option>
+
                   </select>
                 </label>
 
