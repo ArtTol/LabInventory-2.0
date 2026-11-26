@@ -68,6 +68,7 @@ export default function MainLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchMaterials, setSearchMaterials] = useState<GlobalMaterial[]>([]);
 const [searchLots, setSearchLots] = useState<GlobalLot[]>([]);
@@ -160,7 +161,7 @@ const filteredSearchMovements = useMemo(() => {
           </div>
         </div>
 
-        
+    
 
         <nav className="navigation">
           {navigation
@@ -312,7 +313,7 @@ const filteredSearchMovements = useMemo(() => {
             <button
               className="topbar-user"
               type="button"
-              onClick={handleLogout}
+              onClick={() => setUserMenuOpen((prev) => !prev)}
               title="Sign out"
             >
               <div className="user-avatar small">{initials}</div>
@@ -322,6 +323,24 @@ const filteredSearchMovements = useMemo(() => {
               </div>
               <ChevronDown size={16} />
             </button>
+            {userMenuOpen && (
+  <div className="topbar-user-menu">
+    <button
+      type="button"
+      className="topbar-user-menu-item"
+      onClick={handleLogout}
+    >
+      Switch User
+    </button>
+    <button
+      type="button"
+      className="topbar-user-menu-item"
+      onClick={handleLogout}
+    >
+      Logout
+    </button>
+  </div>
+)}
           </div>
         </header>
 
