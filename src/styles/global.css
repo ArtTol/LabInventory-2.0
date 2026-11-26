@@ -2054,6 +2054,8 @@ font-weight: 400;
   outline: none;
   resize: vertical;
   color: #344055;
+  background: #ffffff;
+-webkit-text-fill-color: #344055;
   font: inherit;
   font-size: 11px;
 }
