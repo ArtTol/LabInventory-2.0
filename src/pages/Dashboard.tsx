@@ -7,7 +7,6 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Plus,
-  ClipboardList,
   Clock3,
   Activity,
   ChevronRight,
