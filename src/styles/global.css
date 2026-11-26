@@ -317,6 +317,8 @@ button {
   border-radius: 5px;
   color: #253047;
   font: inherit;
+font-size: 11px;
+font-weight: 400;
   cursor: pointer;
 }
 
